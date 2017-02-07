@@ -27,13 +27,14 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='http://i.imgur.com/FBpgnbc.gif' title='Video Walkthrough' width='' alt='' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+* Designing the UI for the settings screen. Design isn't my strong suit so that took me more time to conceptualize what elements I wanted, where to place them and how the user would expect the interaction to be.
+* I am looking forward to redesigning the app after submitting the pre-work 
 
 ## License
 
