@@ -11,17 +11,11 @@ import UIKit
 class SettingsViewController: UIViewController, UITableViewDataSource,UITableViewDelegate {
     
     @IBOutlet var tableView: UITableView!
-    
     @IBOutlet var tipSlider: UISlider!
-    
     @IBOutlet var tipSliderLabel: UILabel!
-    
-    let settingsList = ["Theme", "About"]
-    
-    let textCellID = "textCell"
-    
     @IBOutlet var enableDefault: UISwitch!
-    
+    let settingsList = ["Theme", "About"]
+    let textCellID = "textCell"
     let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
@@ -36,49 +30,58 @@ class SettingsViewController: UIViewController, UITableViewDataSource,UITableVie
         
         tipSlider.maximumValue = 20
         
-        if defaults.object(forKey: "sliderValue") != nil{
+        if defaults.object(forKey: "sliderValue") != nil{   //if object exists
             
-            tipSliderLabel.text = String(defaults.integer(forKey: "sliderValue"))+"%"
-            tipSlider.setValue(Float(defaults.integer(forKey: "sliderValue")), animated: true)
+            setSliderVal(val: defaults.integer(forKey: "sliderValue"))
             
-            enableDefault.setOn(defaults.bool(forKey: "toggleValue"), animated: true)
+            setToggle(aBool: defaults.bool(forKey: "toggleValue"))
             
-            if !enableDefault.isOn{
-                tipSlider.isUserInteractionEnabled = false
-            }else{
-                tipSlider.isUserInteractionEnabled = true
-            }
+        }else{  //else init label, disable slider and set toggle to false
             
-        }else{
+            setSliderVal(val: Int(tipSlider.minimumValue))
             
-            tipSliderLabel.text = String(Int(tipSlider.minimumValue))+"%"
-            tipSlider.setValue(Float(tipSlider.minimumValue), animated: true)
-            
-            enableDefault.setOn(false, animated: true)
-            tipSlider.isUserInteractionEnabled = false
+            setToggle(aBool: false)
             
         }
         
     }
     
-    @IBAction func changePercent(_ sender: Any) {
-        tipSliderLabel.text = "\(Int(tipSlider.value))%"
+    //set the label text and value of the slider
+    func setSliderVal(val: Int){
+        tipSliderLabel.text = String(val)+"%"
+        tipSlider.setValue(Float(val), animated: true)
     }
     
-    @IBAction func saveValue(_ sender: Any) {
-        defaults.set(Int(tipSlider.value), forKey: "sliderValue")
-        defaults.synchronize()
-    }
-    
-    @IBAction func onToggle(_ sender: Any) {
-        if !enableDefault.isOn{
+    //set toggle val and enable/disable slider absed on val
+    func setToggle(aBool: Bool){
+        enableDefault.setOn(aBool, animated: true)
+        
+        if !aBool{
             tipSlider.isUserInteractionEnabled = false
         }else{
             tipSlider.isUserInteractionEnabled = true
         }
+    }
+    
+    //update label text based on slider value when it changes
+    @IBAction func changePercent(_ sender: Any) {
+        tipSliderLabel.text = "\(Int(tipSlider.value))%"
+        defaults.set(Int(tipSlider.value), forKey: "sliderValue")
+        defaults.synchronize()
+    }
+    
+    //disable/enable slider when toggle is flipped
+    @IBAction func onToggle(_ sender: Any) {
+        setToggle(aBool: enableDefault.isOn)
         defaults.set(enableDefault.isOn, forKey: "toggleValue")
         defaults.synchronize()
     }
+    
+    //save the value when slider stops moving w/ touchupinside TESTING
+    //    @IBAction func saveValue(_ sender: Any) {
+    //        defaults.set(Int(tipSlider.value), forKey: "sliderValue")
+    //        defaults.synchronize()
+    //    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
