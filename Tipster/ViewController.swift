@@ -34,6 +34,8 @@ class TCViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
+        billField.becomeFirstResponder()
+        
         checkAppLifeTime()
         
         if billField.text != ""{
