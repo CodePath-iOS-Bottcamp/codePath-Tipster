@@ -4,7 +4,7 @@
 
 Submitted by: **Arthur Burgin Jr**
 
-Time spent: **5.5** hours spent in total
+Time spent: **7** hours spent in total
 
 ## User Stories
 
@@ -15,7 +15,7 @@ The following **required** functionality is complete:
 
 The following **optional** features are implemented:
 * [ ] UI animations
-* [ ] Remembering the bill amount across app restarts (if <10mins)
+* [X] Remembering the bill amount across app restarts (if <10mins)
 * [ ] Using locale-specific currency and currency thousands separators.
 * [ ] Making sure the keyboard is always visible and the bill amount is always the first responder. This way the user doesn't have to tap anywhere to use this app. Just launch the app and start typing.
 
@@ -28,13 +28,15 @@ The following **additional** features are implemented:
 Here's a walkthrough of implemented user stories:
 
 <img src='http://i.imgur.com/FBpgnbc.gif' title='Video Walkthrough' width='' alt='' />
+<img src='http://i.imgur.com/a/VNaoH.gif' title='Video Walkthrough' width='' alt='' />
+
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
 * Designing the UI for the settings screen. Design isn't my strong suit so that took me more time to conceptualize what elements I wanted, where to place them and how the user would expect the interaction to be.
-* I am looking forward to redesigning the app after submitting the pre-work
+* Understanding how to use NSDate was tricky at first. I needed to understand what a NSDate object was and what it could do before figuring out how to get a time interval.
 
 ## License
 
