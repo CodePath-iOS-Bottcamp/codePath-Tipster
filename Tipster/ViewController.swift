@@ -16,6 +16,7 @@ class TCViewController: UIViewController {
     @IBOutlet var tipControl: UISegmentedControl!
     let defaults = UserDefaults.standard
     let tipPercentage = [18, 20, 25]
+    let numFormat = NumberFormatter()
     var savedTip:Int!
     var minutes:Int!
     var rawTime:Int!
@@ -59,13 +60,18 @@ class TCViewController: UIViewController {
     
     //calculates the total based on bill and tip amounts
     func calcTotal(val: Int){
+        
         bill = Double(billField.text!) ?? 0
         tip = bill * Double(val)/100
         total = bill + tip
         
-        tipLabel.text = String(format: "$%.2f", tip)
-        totalLabel.text = String(format: "$%.2f", total)
+        numFormat.groupingSeparator = ","
+        numFormat.numberStyle = .currency
+        //add switch statement for additional locales and add locale selection in settings
         
+        tipLabel.text = numFormat.string(from: tip as NSNumber)!
+        totalLabel.text = numFormat.string(from: total as NSNumber)!
+
         saveVals(bill: bill, tip: tipLabel.text!, total: totalLabel.text!)
     }
     
