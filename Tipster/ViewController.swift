@@ -60,14 +60,13 @@ class TCViewController: UIViewController {
     
     //calculates the total based on bill and tip amounts
     func calcTotal(val: Int){
-        
         bill = Double(billField.text!) ?? 0
         tip = bill * Double(val)/100
         total = bill + tip
         
         numFormat.groupingSeparator = ","
         numFormat.numberStyle = .currency
-        //add switch statement for additional locales and add locale selection in settings
+        numFormat.locale = Locale.current
         
         tipLabel.text = numFormat.string(from: tip as NSNumber)!
         totalLabel.text = numFormat.string(from: total as NSNumber)!
@@ -124,11 +123,6 @@ class TCViewController: UIViewController {
             calcTotal(val: tipPercentage[tipControl.selectedSegmentIndex])
         }
         
-    }
-    
-    //touch anywhere on screen will make keyboard go away
-    @IBAction func onTap(_ sender: Any) {
-        view.endEditing(true)
     }
     
     override func didReceiveMemoryWarning() {
