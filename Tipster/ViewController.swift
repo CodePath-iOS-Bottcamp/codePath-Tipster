@@ -30,6 +30,10 @@ class TCViewController: UIViewController {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
+        numFormat.groupingSeparator = ","
+        numFormat.numberStyle = .currency
+        numFormat.locale = Locale.current
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -63,10 +67,6 @@ class TCViewController: UIViewController {
         bill = Double(billField.text!) ?? 0
         tip = bill * Double(val)/100
         total = bill + tip
-        
-        numFormat.groupingSeparator = ","
-        numFormat.numberStyle = .currency
-        numFormat.locale = Locale.current
         
         tipLabel.text = numFormat.string(from: tip as NSNumber)!
         totalLabel.text = numFormat.string(from: total as NSNumber)!
