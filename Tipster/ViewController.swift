@@ -16,6 +16,7 @@ class TCViewController: UIViewController {
     @IBOutlet var tipControl: UISegmentedControl!
     let defaults = UserDefaults.standard
     let tipPercentage = [18, 20, 25]
+    let numFormat = NumberFormatter()
     var savedTip:Int!
     var minutes:Int!
     var rawTime:Int!
@@ -28,6 +29,10 @@ class TCViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
+        
+        numFormat.groupingSeparator = ","
+        numFormat.numberStyle = .currency
+        numFormat.locale = Locale.current
         
     }
     
@@ -63,9 +68,9 @@ class TCViewController: UIViewController {
         tip = bill * Double(val)/100
         total = bill + tip
         
-        tipLabel.text = String(format: "$%.2f", tip)
-        totalLabel.text = String(format: "$%.2f", total)
-        
+        tipLabel.text = numFormat.string(from: tip as NSNumber)!
+        totalLabel.text = numFormat.string(from: total as NSNumber)!
+
         saveVals(bill: bill, tip: tipLabel.text!, total: totalLabel.text!)
     }
     
@@ -118,11 +123,6 @@ class TCViewController: UIViewController {
             calcTotal(val: tipPercentage[tipControl.selectedSegmentIndex])
         }
         
-    }
-    
-    //touch anywhere on screen will make keyboard go away
-    @IBAction func onTap(_ sender: Any) {
-        view.endEditing(true)
     }
     
     override func didReceiveMemoryWarning() {
