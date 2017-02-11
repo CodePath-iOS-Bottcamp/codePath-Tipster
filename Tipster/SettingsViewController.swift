@@ -30,7 +30,12 @@ class SettingsViewController: UIViewController, UITableViewDataSource,UITableVie
         
         tipSlider.maximumValue = 20
         
-        if defaults.object(forKey: "sliderValue") != nil{   //if object exists
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if defaults.object(forKey: "sliderValue") != nil{
             
             setSliderVal(val: defaults.integer(forKey: "sliderValue"))
             
@@ -43,13 +48,14 @@ class SettingsViewController: UIViewController, UITableViewDataSource,UITableVie
             setToggle(aBool: false)
             
         }
-        
     }
     
     //set the label text and value of the slider
     func setSliderVal(val: Int){
+        defaults.set(tipSlider.minimumValue, forKey: "sliderValue")
         tipSliderLabel.text = String(val)+"%"
         tipSlider.setValue(Float(val), animated: true)
+        defaults.synchronize()
     }
     
     //set toggle val and enable/disable slider absed on val
