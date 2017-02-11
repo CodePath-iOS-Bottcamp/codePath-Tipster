@@ -74,7 +74,7 @@ class TCViewController: UIViewController {
     func calcTotal(val: Int){
         bill = Double(billField.text!) ?? 0
         tip = (bill * (Double(val)/100))/Double(numPatron)
-        total = bill + tip
+        total = bill/Double(numPatron) + tip
         
         tipLabel.text = numFormat.string(from: tip as NSNumber)!
         totalLabel.text = numFormat.string(from: total as NSNumber)!
