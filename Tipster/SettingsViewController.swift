@@ -14,9 +14,10 @@ class SettingsViewController: UIViewController, UITableViewDataSource,UITableVie
     @IBOutlet var tipSlider: UISlider!
     @IBOutlet var tipSliderLabel: UILabel!
     @IBOutlet var enableDefault: UISwitch!
-    let settingsList = ["Theme", "About"]
-    let textCellID = "textCell"
-    let defaults = UserDefaults.standard
+    let themeToggle = UISwitch(frame: CGRect(x: 100, y: 100, width: 300, height: 300))
+    let settingsList = ["Dark Theme", "About"]
+    static let slider = Default(key: "slider")
+    static let toggle = Default(key: "toggle")
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -35,52 +36,36 @@ class SettingsViewController: UIViewController, UITableViewDataSource,UITableVie
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if defaults.object(forKey: "sliderValue") != nil{
+        if SettingsViewController.slider.returnValue() != nil{
             
-            setSliderVal(val: defaults.integer(forKey: "sliderValue"))
+            tipSliderLabel.text = "\(SettingsViewController.slider.returnValue()!)%"
+            tipSlider.setValue(SettingsViewController.slider.returnValue() as! Float, animated: true)
+            setToggle(SettingsViewController.toggle.returnValue()! as! Bool)
             
-            setToggle(aBool: defaults.bool(forKey: "toggleValue"))
+        }else{
+            SettingsViewController.slider.saveValue(tipSlider.minimumValue)
             
-        }else{  //else init label, disable slider and set toggle to false
-            
-            setSliderVal(val: Int(tipSlider.minimumValue))
-            
-            setToggle(aBool: false)
-            
+            setToggle(false)
         }
-    }
-    
-    //set the label text and value of the slider
-    func setSliderVal(val: Int){
-        defaults.set(tipSlider.minimumValue, forKey: "sliderValue")
-        tipSliderLabel.text = String(val)+"%"
-        tipSlider.setValue(Float(val), animated: true)
-        defaults.synchronize()
     }
     
     //set toggle val and enable/disable slider absed on val
-    func setToggle(aBool: Bool){
+    func setToggle(_ aBool: Bool){
         enableDefault.setOn(aBool, animated: true)
-        
-        if !aBool{
-            tipSlider.isUserInteractionEnabled = false
-        }else{
-            tipSlider.isUserInteractionEnabled = true
-        }
+        tipSlider.isUserInteractionEnabled = aBool
+        SettingsViewController.toggle.saveValue(aBool)
     }
     
     //update label text based on slider value when it changes
     @IBAction func changePercent(_ sender: Any) {
         tipSliderLabel.text = "\(Int(tipSlider.value))%"
-        defaults.set(Int(tipSlider.value), forKey: "sliderValue")
-        defaults.synchronize()
+        SettingsViewController.slider.saveValue(Int(tipSlider.value))
     }
     
     //disable/enable slider when toggle is flipped
     @IBAction func onToggle(_ sender: Any) {
-        setToggle(aBool: enableDefault.isOn)
-        defaults.set(enableDefault.isOn, forKey: "toggleValue")
-        defaults.synchronize()
+        setToggle(enableDefault.isOn)
+        //toggle.saveValue(enableDefault.isOn)
     }
     
     //save the value when slider stops moving w/ touchupinside TESTING
@@ -98,9 +83,18 @@ class SettingsViewController: UIViewController, UITableViewDataSource,UITableVie
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: textCellID, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "textCell0", for: indexPath)
         
         let row = indexPath.row
+        
+        switch row {
+            case 0:
+                cell.accessoryView = themeToggle    //manually add 
+            case 1:
+                cell.accessoryType = .disclosureIndicator
+            default:
+                break
+        }
         
         cell.textLabel?.text = settingsList[row]
         
