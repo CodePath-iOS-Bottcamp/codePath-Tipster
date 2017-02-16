@@ -12,12 +12,17 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
-    var tipCalcVC: TCViewController?
+    let defaults = UserDefaults.standard
+    
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
-        
+        checkAppLifeTime()
+        return true
+    }
+    
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
         return true
     }
     
@@ -28,24 +33,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                 var minutes:Int!
                 var rawTime:Int!
 
-                if(tipCalcVC?.defaults.object(forKey: "startTime") != nil){
-                    rawTime = Int(currTime.timeIntervalSince(tipCalcVC?.defaults.object(forKey: "startTime") as! Date))
+                if(defaults.object(forKey: "startTime") != nil){
+                    rawTime = Int(currTime.timeIntervalSince(defaults.object(forKey: "startTime") as! Date))
                     minutes = (rawTime/60)
         
-                    if minutes >= 1{
-                        tipCalcVC?.defaults.setValue(startTime, forKey: "startTime")
-                        resetBill()
+                    if minutes >= 2{
+                        defaults.setValue(startTime, forKey: "startTime")
+                        defaults.set(true, forKey: "reset")
+                        
                     }
                 }else{
-                    tipCalcVC?.defaults.setValue(startTime, forKey: "startTime")
+                    defaults.setValue(startTime, forKey: "startTime")
                 }
-    }
-    
-    //reset all values except default tip percentage
-    func resetBill(){
-        tipCalcVC?.defaults.set(false, forKey: "toggle")
-        tipCalcVC?.saveVals(0.0, "0.0", "0.0", 1)
-        tipCalcVC?.calcTotal(0)
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

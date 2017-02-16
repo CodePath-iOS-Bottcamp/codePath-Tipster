@@ -29,8 +29,13 @@ class TCViewController: UIViewController {
         numFormat.numberStyle = .currency
         numFormat.locale = Locale.current
         
-        self.firstView.alpha = 0
-        self.secondView.alpha = 0
+        if defaults.bool(forKey: "reset"){
+            resetValues()
+            defaults.set(false, forKey: "reset")
+        }
+        
+        firstView.alpha = 0
+        secondView.alpha = 0
         
         UIView.animate(withDuration: 1.2, animations: {
             self.firstView.alpha = 1
@@ -43,35 +48,26 @@ class TCViewController: UIViewController {
         super.viewWillAppear(animated)
         
         billField.becomeFirstResponder()
-        
-//        checkAppLifeTime()
-        
-        if billField.text != ""{    //check if coming back from settings screen
-            if defaults.bool(forKey: "toggle"){
-                calcTotal(defaults.integer(forKey: "slider"))
-            }else{
-                calcTotal(tipPercentage[tipControl.selectedSegmentIndex])
-            }
-            
-        }else if(defaults.object(forKey: "total") != nil){//see if a total value was previous saved
-            if (defaults.double(forKey: "bill") == 0.0){ //check to see if app vals reset or not
-                billField.text = ""
+        if(defaults.object(forKey: "total") != nil){//see if a total value was previous saved
+            if billField.text != ""{    //check if coming back from settings screen
+                calculateTip(self)
+                
+            }else if (defaults.double(forKey: "bill") == 0.0){ //check to see if app vals reset or not
+                            billField.text = ""
             }else{
                 billField.text = String(defaults.double(forKey: "bill"))
+                tipLabel.text = defaults.string(forKey: "tip")
+                totalLabel.text = defaults.string(forKey: "total")
+                tipControl.selectedSegmentIndex = defaults.integer(forKey: "segment")
+                numPatronLabel.text = defaults.string(forKey: "numPatron")
             }
-            
-            //fill labels from NSDefault
-            tipLabel.text = defaults.string(forKey: "tip")
-            totalLabel.text = defaults.string(forKey: "total")
-            tipControl.selectedSegmentIndex = defaults.integer(forKey: "segment")
-            numPatronLabel.text = defaults.string(forKey: "numPatron")
-        }
-        
+                        
+       }
         
     }
     
     //calculates the total based on bill and tip amounts
-    func calcTotal(_ val: Int){
+    func calculateTotal(_ val: Int){
         var myBill:Double!
         var myTip:Double!
         var myTotal:Double!
@@ -85,11 +81,11 @@ class TCViewController: UIViewController {
         tipLabel.text = numFormat.string(from: myTip as NSNumber)!
         totalLabel.text = numFormat.string(from: myTotal as NSNumber)!
 
-        saveVals(myBill, tipLabel.text!, totalLabel.text!, Int(myNumPatron))
+        saveValues(myBill, tipLabel.text!, totalLabel.text!, Int(myNumPatron))
     }
     
     //persists values from each field
-    func saveVals(_ aBill: Double, _ aTip: String, _ aTotal: String, _ aNumPatron: Int){
+    func saveValues(_ aBill: Double, _ aTip: String, _ aTotal: String, _ aNumPatron: Int){
         defaults.set(aBill, forKey: "bill")
         defaults.set(aTip, forKey: "tip")
         defaults.set(aTotal, forKey: "total")
@@ -97,14 +93,21 @@ class TCViewController: UIViewController {
         defaults.set(tipControl.selectedSegmentIndex, forKey: "segment")
     }
     
+    //reset all values except default tip percentage
+    func resetValues(){
+        defaults.set(false, forKey: "toggle")
+        saveValues(0.00, "$0.00", "$0.00", 1)
+        calculateTotal(0)
+    }
+    
     
     //determines whether to calculate tip with the default value or selected segment
     @IBAction func calculateTip(_ sender: AnyObject) {
         
         if defaults.bool(forKey: "toggle"){
-            calcTotal(defaults.integer(forKey: "slider"))
+            calculateTotal(defaults.integer(forKey: "slider"))
         }else{
-            calcTotal(tipPercentage[tipControl.selectedSegmentIndex])
+            calculateTotal(tipPercentage[tipControl.selectedSegmentIndex])
         }
         
     }
