@@ -11,20 +11,15 @@ import UIKit
 class TCViewController: UIViewController {
 
     @IBOutlet var billField: UITextField!
+    @IBOutlet var secondView: UIView!
+    @IBOutlet var firstView: UIView!
     @IBOutlet var tipLabel: UILabel!
     @IBOutlet var totalLabel: UILabel!
     @IBOutlet var numPatronLabel: UILabel!
     @IBOutlet var tipControl: UISegmentedControl!
     let tipPercentage = [18, 20, 25]
     let numFormat = NumberFormatter()
-    let slider = SettingsViewController.slider
-    let toggle = SettingsViewController.toggle
-    let bill = Default(key: "bill")
-    let tip = Default(key: "tip")
-    let total = Default(key: "total")
-    let segment = Default(key: "segment")
-    let numPatron = Default(key: "numPatron")
-    let startTime = Default(key: "startTime")
+    let defaults = UserDefaults.standard
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -34,6 +29,14 @@ class TCViewController: UIViewController {
         numFormat.numberStyle = .currency
         numFormat.locale = Locale.current
         
+        self.firstView.alpha = 0
+        self.secondView.alpha = 0
+        
+        UIView.animate(withDuration: 1.2, animations: {
+            self.firstView.alpha = 1
+            self.secondView.alpha = 1
+        })
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -41,25 +44,27 @@ class TCViewController: UIViewController {
         
         billField.becomeFirstResponder()
         
-        checkAppLifeTime()
+//        checkAppLifeTime()
         
         if billField.text != ""{    //check if coming back from settings screen
-            if toggle.returnValue() as! Bool{
-                calcTotal(slider.returnValue() as! Int)
+            if defaults.bool(forKey: "toggle"){
+                calcTotal(defaults.integer(forKey: "slider"))
             }else{
                 calcTotal(tipPercentage[tipControl.selectedSegmentIndex])
             }
-        }else if(total.returnValue() != nil){//see if a total value was previous saved
-            if (bill.returnValue() as! Double == 0.0){ //check to see if app vals reset or not
+            
+        }else if(defaults.object(forKey: "total") != nil){//see if a total value was previous saved
+            if (defaults.double(forKey: "bill") == 0.0){ //check to see if app vals reset or not
                 billField.text = ""
             }else{
-                billField.text = "\(bill.returnValue()!)"
+                billField.text = String(defaults.double(forKey: "bill"))
             }
+            
             //fill labels from NSDefault
-            tipLabel.text = "\(tip.returnValue()!)"
-            totalLabel.text = "\(total.returnValue()!)"
-            tipControl.selectedSegmentIndex = segment.returnValue() as! Int
-            numPatronLabel.text = "\(numPatron.returnValue()!)"
+            tipLabel.text = defaults.string(forKey: "tip")
+            totalLabel.text = defaults.string(forKey: "total")
+            tipControl.selectedSegmentIndex = defaults.integer(forKey: "segment")
+            numPatronLabel.text = defaults.string(forKey: "numPatron")
         }
         
         
@@ -85,47 +90,19 @@ class TCViewController: UIViewController {
     
     //persists values from each field
     func saveVals(_ aBill: Double, _ aTip: String, _ aTotal: String, _ aNumPatron: Int){
-        
-        self.bill.saveValue(aBill)
-        self.tip.saveValue(aTip)
-        self.total.saveValue(aTotal)
-        self.segment.saveValue(tipControl.selectedSegmentIndex)
-        self.numPatron.saveValue(aNumPatron)
-    }
-    
-    //perform a time check to see if app was last used in 10 minutes
-    func checkAppLifeTime(){
-        let startTime = Date()
-        let currTime = NSDate()
-        var minutes:Int!
-        var rawTime:Int!
-        
-        if(self.startTime.returnValue() != nil){
-            rawTime = Int(currTime.timeIntervalSince(self.startTime.returnValue() as! Date))
-            minutes = (rawTime/60)
-            
-            if minutes >= 10{
-                self.startTime.saveValue(startTime)
-                resetBill()
-            }
-        }else{
-            self.startTime.saveValue(startTime)
-        }
-    }
-    
-    //reset all values except default tip percentage
-    func resetBill(){
-        toggle.saveValue(false)
-        saveVals(0.0, "0.0", "0.0", 1)
-        calcTotal(0)
+        defaults.set(aBill, forKey: "bill")
+        defaults.set(aTip, forKey: "tip")
+        defaults.set(aTotal, forKey: "total")
+        defaults.set(aNumPatron, forKey: "numPatron")
+        defaults.set(tipControl.selectedSegmentIndex, forKey: "segment")
     }
     
     
     //determines whether to calculate tip with the default value or selected segment
     @IBAction func calculateTip(_ sender: AnyObject) {
         
-        if toggle.returnValue() as! Bool{
-            calcTotal(slider.returnValue() as! Int)
+        if defaults.bool(forKey: "toggle"){
+            calcTotal(defaults.integer(forKey: "slider"))
         }else{
             calcTotal(tipPercentage[tipControl.selectedSegmentIndex])
         }

@@ -144,7 +144,9 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="billField" destination="eq7-Mc-Oe7" id="Isi-W8-n0A"/>
+                        <outlet property="firstView" destination="gbA-Ie-SP4" id="e0H-cW-QPm"/>
                         <outlet property="numPatronLabel" destination="s6G-tE-L3g" id="w9k-zR-TbN"/>
+                        <outlet property="secondView" destination="Rg5-YU-NwZ" id="37b-eb-am6"/>
                         <outlet property="tipControl" destination="OMG-IM-Dg4" id="UBV-mD-eC3"/>
                         <outlet property="tipLabel" destination="Lka-H4-NGX" id="axL-kM-gFg"/>
                         <outlet property="totalLabel" destination="GSP-bb-KYD" id="5dj-ct-wQi"/>
@@ -197,7 +199,6 @@
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <connections>
                                             <action selector="onToggle:" destination="rLl-SF-0eV" eventType="valueChanged" id="2tz-AZ-ZHc"/>
-                                            <action selector="testFunc:" destination="rLl-SF-0eV" eventType="editingDidEndOnExit" id="F23-UQ-B40"/>
                                         </connections>
                                     </switch>
                                     <slider opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="0.0" id="kJo-cF-O7N">

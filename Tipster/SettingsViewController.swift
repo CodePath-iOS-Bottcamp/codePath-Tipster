@@ -16,8 +16,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource,UITableVie
     @IBOutlet var enableDefault: UISwitch!
     let themeToggle = UISwitch(frame: CGRect(x: 100, y: 100, width: 300, height: 300))
     let settingsList = ["Dark Theme", "About"]
-    static let slider = Default(key: "slider")
-    static let toggle = Default(key: "toggle")
+    let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,48 +30,46 @@ class SettingsViewController: UIViewController, UITableViewDataSource,UITableVie
         
         tipSlider.maximumValue = 20
         
+        
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if SettingsViewController.slider.returnValue() != nil{
+        if defaults.object(forKey: "slider") != nil{   //if object exists
             
-            tipSliderLabel.text = "\(SettingsViewController.slider.returnValue()!)%"
-            tipSlider.setValue(SettingsViewController.slider.returnValue() as! Float, animated: true)
-            setToggle(SettingsViewController.toggle.returnValue()! as! Bool)
+            tipSliderLabel.text = "\(defaults.integer(forKey: "slider"))%"
+            tipSlider.setValue(defaults.float(forKey: "slider"), animated: true)
             
-        }else{
-            SettingsViewController.slider.saveValue(tipSlider.minimumValue)
+            turnOnDefaultPercent(defaults.bool(forKey: "toggle"))
             
-            setToggle(false)
+        }else{  //else init label, disable slider and set toggle to false
+            
+            changePercent((val: Int(tipSlider.minimumValue)))
+            
+            turnOnDefaultPercent(false)
+            
         }
     }
     
     //set toggle val and enable/disable slider absed on val
-    func setToggle(_ aBool: Bool){
+    func turnOnDefaultPercent(_ aBool: Bool){
         enableDefault.setOn(aBool, animated: true)
         tipSlider.isUserInteractionEnabled = aBool
-        SettingsViewController.toggle.saveValue(aBool)
+        defaults.set(aBool, forKey: "toggle")
     }
     
     //update label text based on slider value when it changes
     @IBAction func changePercent(_ sender: Any) {
         tipSliderLabel.text = "\(Int(tipSlider.value))%"
-        SettingsViewController.slider.saveValue(Int(tipSlider.value))
+        defaults.set(Int(tipSlider.value), forKey: "slider")
+        
     }
     
     //disable/enable slider when toggle is flipped
     @IBAction func onToggle(_ sender: Any) {
-        setToggle(enableDefault.isOn)
-        //toggle.saveValue(enableDefault.isOn)
+        turnOnDefaultPercent(enableDefault.isOn)
     }
-    
-    //save the value when slider stops moving w/ touchupinside TESTING
-    //    @IBAction func saveValue(_ sender: Any) {
-    //        defaults.set(Int(tipSlider.value), forKey: "sliderValue")
-    //        defaults.synchronize()
-    //    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
