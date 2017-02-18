@@ -12,11 +12,39 @@ import UIKit
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
+    let defaults = UserDefaults.standard
+    
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
+        checkAppLifeTime()
         return true
+    }
+    
+    func application(_ application: UIApplication, willFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey : Any]? = nil) -> Bool {
+        return true
+    }
+    
+    //perform a time check to see if app was last used in 10 minutes
+    func checkAppLifeTime(){
+                let startTime = Date()
+                let currTime = NSDate()
+                var minutes:Int!
+                var rawTime:Int!
+
+                if(defaults.object(forKey: "startTime") != nil){
+                    rawTime = Int(currTime.timeIntervalSince(defaults.object(forKey: "startTime") as! Date))
+                    minutes = (rawTime/60)
+        
+                    if minutes >= 10{
+                        defaults.setValue(startTime, forKey: "startTime")
+                        defaults.set(true, forKey: "isReset")
+                        
+                    }
+                }else{
+                    defaults.setValue(startTime, forKey: "startTime")
+                }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {
@@ -35,6 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

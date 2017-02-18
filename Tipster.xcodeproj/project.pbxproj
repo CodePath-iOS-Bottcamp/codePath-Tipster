@@ -8,22 +8,24 @@
 
 /* Begin PBXBuildFile section */
 		C66F38DC1E3C6D98001B2A03 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66F38DB1E3C6D98001B2A03 /* AppDelegate.swift */; };
-		C66F38DE1E3C6D98001B2A03 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66F38DD1E3C6D98001B2A03 /* ViewController.swift */; };
+		C66F38DE1E3C6D98001B2A03 /* TCViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C66F38DD1E3C6D98001B2A03 /* TCViewController.swift */; };
 		C66F38E11E3C6D98001B2A03 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C66F38DF1E3C6D98001B2A03 /* Main.storyboard */; };
 		C66F38E31E3C6D98001B2A03 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C66F38E21E3C6D98001B2A03 /* Assets.xcassets */; };
 		C66F38E61E3C6D98001B2A03 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C66F38E41E3C6D98001B2A03 /* LaunchScreen.storyboard */; };
 		C67938371E3C911F0021A695 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C67938361E3C911F0021A695 /* SettingsViewController.swift */; };
+		C6C274911E4EEABA006A52C5 /* sil.png in Resources */ = {isa = PBXBuildFile; fileRef = C6C274901E4EEABA006A52C5 /* sil.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		C66F38D81E3C6D98001B2A03 /* Tipster.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tipster.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C66F38DB1E3C6D98001B2A03 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C66F38DD1E3C6D98001B2A03 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		C66F38DD1E3C6D98001B2A03 /* TCViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TCViewController.swift; sourceTree = "<group>"; };
 		C66F38E01E3C6D98001B2A03 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C66F38E21E3C6D98001B2A03 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C66F38E51E3C6D98001B2A03 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C66F38E71E3C6D98001B2A03 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C67938361E3C911F0021A695 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		C6C274901E4EEABA006A52C5 /* sil.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sil.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -56,8 +58,9 @@
 		C66F38DA1E3C6D98001B2A03 /* Tipster */ = {
 			isa = PBXGroup;
 			children = (
+				C6C274901E4EEABA006A52C5 /* sil.png */,
 				C66F38DB1E3C6D98001B2A03 /* AppDelegate.swift */,
-				C66F38DD1E3C6D98001B2A03 /* ViewController.swift */,
+				C66F38DD1E3C6D98001B2A03 /* TCViewController.swift */,
 				C67938361E3C911F0021A695 /* SettingsViewController.swift */,
 				C66F38DF1E3C6D98001B2A03 /* Main.storyboard */,
 				C66F38E21E3C6D98001B2A03 /* Assets.xcassets */,
@@ -129,6 +132,7 @@
 			files = (
 				C66F38E61E3C6D98001B2A03 /* LaunchScreen.storyboard in Resources */,
 				C66F38E31E3C6D98001B2A03 /* Assets.xcassets in Resources */,
+				C6C274911E4EEABA006A52C5 /* sil.png in Resources */,
 				C66F38E11E3C6D98001B2A03 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -140,7 +144,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C66F38DE1E3C6D98001B2A03 /* ViewController.swift in Sources */,
+				C66F38DE1E3C6D98001B2A03 /* TCViewController.swift in Sources */,
 				C66F38DC1E3C6D98001B2A03 /* AppDelegate.swift in Sources */,
 				C67938371E3C911F0021A695 /* SettingsViewController.swift in Sources */,
 			);

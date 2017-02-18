@@ -14,8 +14,9 @@ class SettingsViewController: UIViewController, UITableViewDataSource,UITableVie
     @IBOutlet var tipSlider: UISlider!
     @IBOutlet var tipSliderLabel: UILabel!
     @IBOutlet var enableDefault: UISwitch!
-    let settingsList = ["Theme", "About"]
-    let textCellID = "textCell"
+    var themeSwitch: UISwitch!
+    var isDark: Bool!
+    let settingsList = ["Dark Theme", "About"]
     let defaults = UserDefaults.standard
 
     override func viewDidLoad() {
@@ -30,58 +31,57 @@ class SettingsViewController: UIViewController, UITableViewDataSource,UITableVie
         
         tipSlider.maximumValue = 20
         
-        if defaults.object(forKey: "sliderValue") != nil{   //if object exists
+        isDark = false
+        
+        themeSwitch = UISwitch(frame: CGRect(x: 100, y: 100, width: 300, height: 300))
+        
+        themeSwitch.addTarget(self, action: #selector(self.enableDarkTheme), for: .valueChanged)
+        
+        
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        
+        if defaults.object(forKey: "slider") != nil{   //if object exists
             
-            setSliderVal(val: defaults.integer(forKey: "sliderValue"))
+            tipSliderLabel.text = "\(defaults.integer(forKey: "slider"))%"
+            tipSlider.setValue(defaults.float(forKey: "slider"), animated: true)
             
-            setToggle(aBool: defaults.bool(forKey: "toggleValue"))
+            enableSlider(defaults.bool(forKey: "toggle"))
             
         }else{  //else init label, disable slider and set toggle to false
             
-            setSliderVal(val: Int(tipSlider.minimumValue))
+            changePercent((val: Int(tipSlider.minimumValue)))
             
-            setToggle(aBool: false)
+            enableSlider(false)
             
         }
-        
     }
     
-    //set the label text and value of the slider
-    func setSliderVal(val: Int){
-        tipSliderLabel.text = String(val)+"%"
-        tipSlider.setValue(Float(val), animated: true)
-    }
+    //enable dark theme
+    func enableDarkTheme(){
     
-    //set toggle val and enable/disable slider absed on val
-    func setToggle(aBool: Bool){
+    }
+
+    //disable/enable slider when toggle is flipped
+    func enableSlider(_ aBool: Bool){
         enableDefault.setOn(aBool, animated: true)
-        
-        if !aBool{
-            tipSlider.isUserInteractionEnabled = false
-        }else{
-            tipSlider.isUserInteractionEnabled = true
-        }
+        tipSlider.isUserInteractionEnabled = aBool
+        defaults.set(aBool, forKey: "toggle")
     }
     
     //update label text based on slider value when it changes
     @IBAction func changePercent(_ sender: Any) {
         tipSliderLabel.text = "\(Int(tipSlider.value))%"
-        defaults.set(Int(tipSlider.value), forKey: "sliderValue")
-        defaults.synchronize()
+        defaults.set(Int(tipSlider.value), forKey: "slider")
+        
     }
     
     //disable/enable slider when toggle is flipped
     @IBAction func onToggle(_ sender: Any) {
-        setToggle(aBool: enableDefault.isOn)
-        defaults.set(enableDefault.isOn, forKey: "toggleValue")
-        defaults.synchronize()
+        enableSlider(enableDefault.isOn)
     }
-    
-    //save the value when slider stops moving w/ touchupinside TESTING
-    //    @IBAction func saveValue(_ sender: Any) {
-    //        defaults.set(Int(tipSlider.value), forKey: "sliderValue")
-    //        defaults.synchronize()
-    //    }
     
     func numberOfSections(in tableView: UITableView) -> Int {
         return 1
@@ -92,9 +92,19 @@ class SettingsViewController: UIViewController, UITableViewDataSource,UITableVie
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: textCellID, for: indexPath)
+        let cell = tableView.dequeueReusableCell(withIdentifier: "textCell0", for: indexPath)
         
         let row = indexPath.row
+        
+        switch row {
+            case 0:
+                cell.accessoryView = themeSwitch
+                cell.selectionStyle = .none
+            case 1:
+                cell.accessoryType = .disclosureIndicator
+            default:
+                break
+        }
         
         cell.textLabel?.text = settingsList[row]
         
