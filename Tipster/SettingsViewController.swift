@@ -11,13 +11,16 @@ import UIKit
 class SettingsViewController: UIViewController, UITableViewDataSource,UITableViewDelegate {
     
     @IBOutlet var tableView: UITableView!
+    var cell: UITableViewCell!
+    @IBOutlet var header: UIView!
+    @IBOutlet var percentageSection: UIView!
     @IBOutlet var tipSlider: UISlider!
     @IBOutlet var tipSliderLabel: UILabel!
     @IBOutlet var enableDefault: UISwitch!
     var themeSwitch: UISwitch!
-    var isDark: Bool!
-    let settingsList = ["Dark Theme", "About"]
     let defaults = UserDefaults.standard
+    let darkBlue = UIColor(red: 10.0/255.0, green: 80.0/255.0, blue: 204.0/255.0, alpha: 1.0)
+    let backgroundBlue = UIColor(red: 32.0/255.0, green: 101.0/255.0, blue: 249.0/255.0, alpha: 1.0)
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -31,37 +34,54 @@ class SettingsViewController: UIViewController, UITableViewDataSource,UITableVie
         
         tipSlider.maximumValue = 20
         
-        isDark = false
+        cell = tableView.dequeueReusableCell(withIdentifier: "textCell0")
         
         themeSwitch = UISwitch(frame: CGRect(x: 100, y: 100, width: 300, height: 300))
         
         themeSwitch.addTarget(self, action: #selector(self.enableDarkTheme), for: .valueChanged)
-        
+
         
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        if defaults.object(forKey: "slider") != nil{   //if object exists
+        if defaults.object(forKey: "slider") != nil{
             
             tipSliderLabel.text = "\(defaults.integer(forKey: "slider"))%"
             tipSlider.setValue(defaults.float(forKey: "slider"), animated: true)
             
             enableSlider(defaults.bool(forKey: "toggle"))
             
-        }else{  //else init label, disable slider and set toggle to false
+            themeSwitch.setOn(defaults.bool(forKey: "isDark"), animated: true)
+            enableDarkTheme()
+            
+        }else{
             
             changePercent((val: Int(tipSlider.minimumValue)))
             
             enableSlider(false)
+            
+            defaults.set(themeSwitch.isOn, forKey: "isDark")
             
         }
     }
     
     //enable dark theme
     func enableDarkTheme(){
-    
+        if themeSwitch.isOn{
+            self.header.backgroundColor = UIColor.gray
+            self.percentageSection.backgroundColor = UIColor.black
+            self.tableView.backgroundColor = UIColor.black
+            self.cell.backgroundColor = UIColor.gray
+        }else{
+            self.header.backgroundColor = darkBlue
+            self.percentageSection.backgroundColor = backgroundBlue
+            self.tableView.backgroundColor = backgroundBlue
+            self.cell.backgroundColor = darkBlue
+        }
+        
+        defaults.set(themeSwitch.isOn, forKey: "isDark")
     }
 
     //disable/enable slider when toggle is flipped
@@ -88,25 +108,15 @@ class SettingsViewController: UIViewController, UITableViewDataSource,UITableVie
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return settingsList.count
+        return 1
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "textCell0", for: indexPath)
         
-        let row = indexPath.row
+        cell.accessoryView = themeSwitch
+        cell.selectionStyle = .none
         
-        switch row {
-            case 0:
-                cell.accessoryView = themeSwitch
-                cell.selectionStyle = .none
-            case 1:
-                cell.accessoryType = .disclosureIndicator
-            default:
-                break
-        }
-        
-        cell.textLabel?.text = settingsList[row]
+        cell.textLabel?.text = "Dark Theme"
         
         return cell
     }
