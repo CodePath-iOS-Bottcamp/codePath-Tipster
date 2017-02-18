@@ -20,20 +20,34 @@ class TCViewController: UIViewController {
     let tipPercentage = [18, 20, 25]
     let numFormat = NumberFormatter()
     let defaults = UserDefaults.standard
+    var myBill:Double!
+    var myTip:Double!
+    var myTotal:Double!
+    var myNumPatron:Double!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         // Do any additional setup after loading the view, typically from a nib.
         
-        numFormat.groupingSeparator = ","
-        numFormat.numberStyle = .currency
-        numFormat.locale = Locale.current
+        setNumFormatProperties()
         
-        if defaults.bool(forKey: "reset"){
-            resetValues()
-            defaults.set(false, forKey: "reset")
-        }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
         
+        
+        
+        animateView()
+        
+        billField.becomeFirstResponder()
+        
+        updateView()
+        
+    }
+    
+    //animate view
+    func animateView(){
         firstView.alpha = 0
         secondView.alpha = 0
         
@@ -41,19 +55,19 @@ class TCViewController: UIViewController {
             self.firstView.alpha = 1
             self.secondView.alpha = 1
         })
-        
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    //update the view based on persisted data
+    func updateView(){
         
-        billField.becomeFirstResponder()
-        if(defaults.object(forKey: "total") != nil){//see if a total value was previous saved
-            if billField.text != ""{    //check if coming back from settings screen
+        if defaults.bool(forKey: "isReset"){
+            resetValues()
+            defaults.set(false, forKey: "isReset")
+        }else if defaults.object(forKey: "bill") != nil{
+            if defaults.double(forKey: "bill") == 0.0{
+                billField.text = ""
+            }else if billField.text != ""{
                 calculateTip(self)
-                
-            }else if (defaults.double(forKey: "bill") == 0.0){ //check to see if app vals reset or not
-                            billField.text = ""
             }else{
                 billField.text = String(defaults.double(forKey: "bill"))
                 tipLabel.text = defaults.string(forKey: "tip")
@@ -61,17 +75,12 @@ class TCViewController: UIViewController {
                 tipControl.selectedSegmentIndex = defaults.integer(forKey: "segment")
                 numPatronLabel.text = defaults.string(forKey: "numPatron")
             }
-                        
-       }
-        
+            
+        }
     }
     
     //calculates the total based on bill and tip amounts
     func calculateTotal(_ val: Int){
-        var myBill:Double!
-        var myTip:Double!
-        var myTotal:Double!
-        var myNumPatron:Double!
         
         myNumPatron = Double(numPatronLabel.text!)
         myBill = Double(billField.text!) ?? 0
@@ -79,9 +88,14 @@ class TCViewController: UIViewController {
         myTotal = myBill/myNumPatron + myTip
         
         tipLabel.text = numFormat.string(from: myTip as NSNumber)!
-        totalLabel.text = numFormat.string(from: myTotal as NSNumber)!
-
-        saveValues(myBill, tipLabel.text!, totalLabel.text!, Int(myNumPatron))
+        totalLabel.text = numFormat.string(from: myTotal as NSNumber)
+    }
+    
+    //init number formatter properites
+    func setNumFormatProperties(){
+        numFormat.groupingSeparator = ","
+        numFormat.numberStyle = .currency
+        numFormat.locale = Locale.current
     }
     
     //persists values from each field
@@ -103,12 +117,12 @@ class TCViewController: UIViewController {
     
     //determines whether to calculate tip with the default value or selected segment
     @IBAction func calculateTip(_ sender: AnyObject) {
-        
         if defaults.bool(forKey: "toggle"){
             calculateTotal(defaults.integer(forKey: "slider"))
         }else{
             calculateTotal(tipPercentage[tipControl.selectedSegmentIndex])
         }
+        saveValues(myBill, tipLabel.text!, totalLabel.text!, Int(myNumPatron))
         
     }
     

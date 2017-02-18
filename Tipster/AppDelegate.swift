@@ -37,9 +37,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
                     rawTime = Int(currTime.timeIntervalSince(defaults.object(forKey: "startTime") as! Date))
                     minutes = (rawTime/60)
         
-                    if minutes >= 2{
+                    if minutes >= 10{
                         defaults.setValue(startTime, forKey: "startTime")
-                        defaults.set(true, forKey: "reset")
+                        defaults.set(true, forKey: "isReset")
                         
                     }
                 }else{
@@ -63,6 +63,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
     func applicationDidBecomeActive(_ application: UIApplication) {
         // Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
+
     }
 
     func applicationWillTerminate(_ application: UIApplication) {

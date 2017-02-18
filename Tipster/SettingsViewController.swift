@@ -14,7 +14,8 @@ class SettingsViewController: UIViewController, UITableViewDataSource,UITableVie
     @IBOutlet var tipSlider: UISlider!
     @IBOutlet var tipSliderLabel: UILabel!
     @IBOutlet var enableDefault: UISwitch!
-    let themeToggle = UISwitch(frame: CGRect(x: 100, y: 100, width: 300, height: 300))
+    var themeSwitch: UISwitch!
+    var isDark: Bool!
     let settingsList = ["Dark Theme", "About"]
     let defaults = UserDefaults.standard
 
@@ -30,6 +31,12 @@ class SettingsViewController: UIViewController, UITableViewDataSource,UITableVie
         
         tipSlider.maximumValue = 20
         
+        isDark = false
+        
+        themeSwitch = UISwitch(frame: CGRect(x: 100, y: 100, width: 300, height: 300))
+        
+        themeSwitch.addTarget(self, action: #selector(self.enableDarkTheme), for: .valueChanged)
+        
         
     }
     
@@ -41,19 +48,24 @@ class SettingsViewController: UIViewController, UITableViewDataSource,UITableVie
             tipSliderLabel.text = "\(defaults.integer(forKey: "slider"))%"
             tipSlider.setValue(defaults.float(forKey: "slider"), animated: true)
             
-            turnOnDefaultPercent(defaults.bool(forKey: "toggle"))
+            enableSlider(defaults.bool(forKey: "toggle"))
             
         }else{  //else init label, disable slider and set toggle to false
             
             changePercent((val: Int(tipSlider.minimumValue)))
             
-            turnOnDefaultPercent(false)
+            enableSlider(false)
             
         }
     }
     
-    //set toggle val and enable/disable slider absed on val
-    func turnOnDefaultPercent(_ aBool: Bool){
+    //enable dark theme
+    func enableDarkTheme(){
+    
+    }
+
+    //disable/enable slider when toggle is flipped
+    func enableSlider(_ aBool: Bool){
         enableDefault.setOn(aBool, animated: true)
         tipSlider.isUserInteractionEnabled = aBool
         defaults.set(aBool, forKey: "toggle")
@@ -68,7 +80,7 @@ class SettingsViewController: UIViewController, UITableViewDataSource,UITableVie
     
     //disable/enable slider when toggle is flipped
     @IBAction func onToggle(_ sender: Any) {
-        turnOnDefaultPercent(enableDefault.isOn)
+        enableSlider(enableDefault.isOn)
     }
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -86,7 +98,8 @@ class SettingsViewController: UIViewController, UITableViewDataSource,UITableVie
         
         switch row {
             case 0:
-                cell.accessoryView = themeToggle    //manually add 
+                cell.accessoryView = themeSwitch
+                cell.selectionStyle = .none
             case 1:
                 cell.accessoryType = .disclosureIndicator
             default:
