@@ -4,7 +4,7 @@
 
 Submitted by: **Arthur Burgin Jr**
 
-Time spent: **12** hours spent in total
+Time spent: **14** hours spent in total
 
 ## User Stories
 
@@ -23,7 +23,7 @@ The following **additional** features are implemented:
 
 - [X] Update UI Design
 - [X] Divide Tip and bill total by additional number of patrons
-- [ ] Add dark/alternate color theme
+- [X] Add dark/alternate color theme
 
 ## Video Walkthrough 
 

@@ -13,6 +13,7 @@ class TCViewController: UIViewController {
     @IBOutlet var billField: UITextField!
     @IBOutlet var secondView: UIView!
     @IBOutlet var firstView: UIView!
+    @IBOutlet var billFieldView: UITextField!
     @IBOutlet var tipLabel: UILabel!
     @IBOutlet var totalLabel: UILabel!
     @IBOutlet var numPatronLabel: UILabel!
@@ -24,6 +25,8 @@ class TCViewController: UIViewController {
     var myTip:Double!
     var myTotal:Double!
     var myNumPatron:Double!
+    let darkBlue = UIColor(red: 10.0/255.0, green: 80.0/255.0, blue: 204.0/255.0, alpha: 1.0)
+    let backgroundBlue = UIColor(red: 32.0/255.0, green: 101.0/255.0, blue: 249.0/255.0, alpha: 1.0)
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -36,17 +39,32 @@ class TCViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         
-        
-        
         animateView()
         
         billField.becomeFirstResponder()
+        
+        setViewColor()
         
         updateView()
         
     }
     
-    //animate view
+    //set the color of the view based on toggle value
+    func setViewColor(){
+        if defaults.bool(forKey: "isDark"){
+            self.view.backgroundColor = UIColor.black
+            self.firstView.backgroundColor = UIColor.gray
+            self.secondView.backgroundColor = UIColor.gray
+            self.billFieldView.backgroundColor = UIColor.gray
+        }else{
+            self.view.backgroundColor = backgroundBlue
+            self.firstView.backgroundColor = darkBlue
+            self.secondView.backgroundColor = darkBlue
+            self.billFieldView.backgroundColor = darkBlue
+        }
+    }
+    
+    //animate view when it appears
     func animateView(){
         firstView.alpha = 0
         secondView.alpha = 0

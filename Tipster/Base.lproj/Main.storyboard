@@ -17,6 +17,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
+                            <view contentMode="scaleToFill" misplaced="YES" id="gbA-Ie-SP4">
+                                <rect key="frame" x="0.0" y="237" width="375" height="50"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <subviews>
+                                    <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="OMG-IM-Dg4">
+                                        <rect key="frame" x="16" y="8" width="343" height="29"/>
+                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                        <segments>
+                                            <segment title="18%"/>
+                                            <segment title="20%"/>
+                                            <segment title="25%"/>
+                                        </segments>
+                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                        <connections>
+                                            <action selector="calculateTip:" destination="BYZ-38-t0r" eventType="valueChanged" id="3rE-BH-yuc"/>
+                                        </connections>
+                                    </segmentedControl>
+                                </subviews>
+                                <color key="backgroundColor" red="0.037350598722696304" green="0.31469100713729858" blue="0.79829603433609009" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                            </view>
                             <view contentMode="scaleToFill" misplaced="YES" id="Rg5-YU-NwZ">
                                 <rect key="frame" x="0.0" y="287" width="375" height="165"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -103,26 +123,6 @@
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" misplaced="YES" id="gbA-Ie-SP4">
-                                <rect key="frame" x="0.0" y="237" width="375" height="50"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <subviews>
-                                    <segmentedControl opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="OMG-IM-Dg4">
-                                        <rect key="frame" x="16" y="8" width="343" height="29"/>
-                                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                        <segments>
-                                            <segment title="18%"/>
-                                            <segment title="20%"/>
-                                            <segment title="25%"/>
-                                        </segments>
-                                        <color key="tintColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                        <connections>
-                                            <action selector="calculateTip:" destination="BYZ-38-t0r" eventType="valueChanged" id="3rE-BH-yuc"/>
-                                        </connections>
-                                    </segmentedControl>
-                                </subviews>
-                                <color key="backgroundColor" red="0.037350598722696304" green="0.31469100713729858" blue="0.79829603433609009" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="You should tip:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="Osp-jw-qoc">
                                 <rect key="frame" x="65" y="83" width="245" height="38"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
@@ -144,6 +144,7 @@
                     <nil key="simulatedStatusBarMetrics"/>
                     <connections>
                         <outlet property="billField" destination="eq7-Mc-Oe7" id="Isi-W8-n0A"/>
+                        <outlet property="billFieldView" destination="eq7-Mc-Oe7" id="9Me-d9-O75"/>
                         <outlet property="firstView" destination="gbA-Ie-SP4" id="e0H-cW-QPm"/>
                         <outlet property="numPatronLabel" destination="s6G-tE-L3g" id="w9k-zR-TbN"/>
                         <outlet property="secondView" destination="Rg5-YU-NwZ" id="37b-eb-am6"/>
@@ -251,6 +252,8 @@
                     <navigationItem key="navigationItem" title="Settings" id="BKP-S0-LMM"/>
                     <connections>
                         <outlet property="enableDefault" destination="g2G-TF-f75" id="Vvm-cn-4do"/>
+                        <outlet property="header" destination="ttG-AD-UOy" id="WBt-mo-KH1"/>
+                        <outlet property="percentageSection" destination="Qqe-c0-3fv" id="1QU-WP-kbA"/>
                         <outlet property="tableView" destination="0ei-eT-bEI" id="fMS-Qn-zsM"/>
                         <outlet property="tipSlider" destination="kJo-cF-O7N" id="dCC-KV-NCd"/>
                         <outlet property="tipSliderLabel" destination="9CB-xI-cOw" id="GSV-K1-KLW"/>
